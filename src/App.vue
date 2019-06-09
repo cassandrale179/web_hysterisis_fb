@@ -1,31 +1,10 @@
 <template>
   <div id="app">
-
-    <div class="navbar">
-      <ul class="nav navbar-nav">
-
-        <li>
-           <router-link to="/">VueFire</router-link>
-        </li>
-        <li v-if="!authUser">
-          <router-link to="/sign-in">SignIn</router-link>
-        </li>
-
-        <li v-if="!authUser">
-          <router-link to="/sign-up">SignUp</router-link>
-        </li>
-
-        <li v-if="authUser">
-          <a @click="logout"> Logout</a>
-          <a href="#">{{authUser.identifier}}</a>
-
-       </li>
-      </ul>
-
-
+    <div id="appnavbar">
+      <router-link to="/hello">Introduction</router-link>
+      <router-link to="/sign-in">Experiment</router-link>
+      <router-link to="/sign-up">Data</router-link>
     </div>
-
-    <img src="./assets/logo.png">
     <router-view/>
   </div>
 </template>
@@ -39,36 +18,42 @@ export default {
     }
   },
   watch:{
-    '$route':'setAuthUser'
+    // '$route':'setAuthUser'
   },
 
   methods:{
-    setAuthUser(){
-      this.authUser=firebase.auth().currentUser;
-    },
-    logout(){
-      firebase.auth().signOut()
-        .then(()=>{
-          this.$router.replace('/sign-in')
-        })
-        .catch((e)=>{
-          alert(e.message)
-        })
-    }
+
   },
   created(){
-    this.setAuthUser();
-    // this.authUser=firebase.auth().currentUser;
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:300&display=swap');
+
+/* Native elements styling */ 
+  body{
+    position: absolute;
+    height: 100%; 
+    width: 100%; 
+    background-image: url('https://free4kwallpapers.com/uploads/originals/2019/05/18/firewatch-wallpaper.jpg'); 
+    background-size: cover;  
+    text-align: center; 
+    color: white; 
+  }
+
+
+/* Native elements styling */ 
+a{
+  color: white; 
 }
+
+  #appnavbar{
+    font-family: 'Roboto', sans-serif; 
+    color: white; 
+    font-size: 20px;
+  }
+  
 </style>

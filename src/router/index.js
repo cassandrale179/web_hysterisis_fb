@@ -13,7 +13,7 @@ let router = new Router({
       name: 'HelloWorld',
       component: HelloWorld,
       meta:{
-        requiresAuth:true
+        // requiresAuth:true
       }
     },
     {

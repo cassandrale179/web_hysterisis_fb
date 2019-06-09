@@ -9,12 +9,13 @@ Vue.config.productionTip = false
 
 let app;
 var config = {
-  apiKey: "AIzaSyDlFQmbshbz32CxUn8mFHfGm7opw5UhUZg",
-  authDomain: "tinkering-6f440.firebaseapp.com",
-  databaseURL: "https://tinkering-6f440.firebaseio.com",
-  projectId: "tinkering-6f440",
-  storageBucket: "tinkering-6f440.appspot.com",
-  messagingSenderId: "966393702974"
+  apiKey: "AIzaSyBU35MoFKhbTRTwOwxYOwnjDg9N6j4WMBg",
+    authDomain: "hystersis-69801.firebaseapp.com",
+    databaseURL: "https://hystersis-69801.firebaseio.com",
+    projectId: "hystersis-69801",
+    storageBucket: "hystersis-69801.appspot.com",
+    messagingSenderId: "456383164809",
+    appId: "1:456383164809:web:70d63f61b83a3052"
 };
 
 firebase.initializeApp(config);
@@ -32,4 +33,3 @@ firebase.auth().onAuthStateChanged((user)=>{
     });
   }
 });
-
