@@ -1,43 +1,43 @@
-<!--- HTML tempalte for the HelloWorld.vue  --> 
-
+<!--- HTML tempalte for Introduciton.vue --> 
 <template>
   <div v-if="count > 0" class="hello">
       <div id="container">
 
+         <!-- ____________  INSTRUCTION SLIDES DISPLAYING PART  _______________ -->  
         <div v-if= "page < 5" >
-        <h3>Introduction</h3>
-        <div id="text"> In this task, press <b> t </b> if there are more triangles, press <b> c </b> if there are more circles. 
-          For <a href="" class="blue"> blue-colored</a> shape, focus on the <b> big </b> shapes. 
-          For  <a href="" class="green"> green-colored</a>  shape, focus on the <b>small </b> shapes 
-          that make up the big shapes.
+          <h3>Introduction</h3>
+          <div class="text"> In this task, press <b> t </b> if there are more triangles, press <b> c </b> if there are more circles. 
+            For <a href="" class="blue"> blue-colored</a> shape, focus on the <b> big </b> shapes. 
+            For  <a href="" class="green"> green-colored</a>  shape, focus on the <b>small </b> shapes 
+            that make up the big shapes.
+          </div>
+
+            <!-- ____________  INSTRUCTION SLIDES  _______________ --> 
+            <div v-if="page <= 1" class="example">
+                <img src="../assets/d1.png" /> 
+                <u>Example 1 (blue = big):</u> There are <b> 4 triangles </b> and <b> 6 circles </b> in this picture. Press <b>c</b> 
+            </div>
+            <div v-if="page === 2" class="example">
+                <img src="../assets/d2.png" /> 
+                <u>Example 2 (blue = big):</u> There are <b> 8 triangles </b> and <b> 2 circles </b> in this picture. Press <b>t</b> 
+            </div>
+            <div v-if="page === 3" class="example">
+                <img src="../assets/d3.png" /> 
+                <u>Example 3 (green = small):</u> There are <b> 4 triangles </b> and <b> 6 circles </b> in this picture. Press <b>c</b> 
+            </div>
+            <div v-if="page === 4" class="example">
+                <img src="../assets/d4.png" /> 
+                <u>Example 4 (green = small):</u> There are <b> 8 triangles </b> and <b> 2 circles </b> in this picture. Press <b>t</b> 
+            </div> 
+            <button  v-on:click="page -= 1" class="btn"> << Back</button>
+            <button  v-on:click="page += 1" class="btn"> Next >> </button> 
         </div>
 
-           <!-- Instructions example (4 slide in total ) -->
-           <div v-if="page <= 1" class="example">
-              <img src="../assets/d1.png" /> 
-              <u>Example 1 (blue = big):</u> There are <b> 4 triangles </b> and <b> 6 circles </b> in this picture. Press <b>c</b> 
-          </div>
-          <div v-if="page === 2" class="example">
-              <img src="../assets/d2.png" /> 
-              <u>Example 2 (blue = big):</u> There are <b> 8 triangles </b> and <b> 2 circles </b> in this picture. Press <b>t</b> 
-          </div>
-          <div v-if="page === 3" class="example">
-              <img src="../assets/d3.png" /> 
-              <u>Example 3 (green = small):</u> There are <b> 4 triangles </b> and <b> 6 circles </b> in this picture. Press <b>c</b> 
-          </div>
-          <div v-if="page === 4" class="example">
-              <img src="../assets/d4.png" /> 
-              <u>Example 4 (green = small):</u> There are <b> 8 triangles </b> and <b> 2 circles </b> in this picture. Press <b>t</b> 
-          </div> 
-
-          <button  v-on:click="page -= 1" class="btn"> << Back</button>
-          <button  v-on:click="page += 1" class="btn"> Next >> </button> </div>
-
           <!-- ____________  BEGIN EXPERIMENT HERE  _______________ --> 
-          <div v-if= "page >= 5" >
+          <div class="text" v-if= "page >= 5" >
             <h1> Expeirment </h1>  
             The experiment will begin. You will see <b>10 </b> slides of just blue shapes,  <b>10 </b> slieds of green shapes, 
-            then  <b>10 </b> slides of blue, green, blue, green ...etc.  <br > 
+            then  <b>10 </b> slides of blue, green, blue, green ...etc.  
             Click <b> Begin </b> when you are ready, or <b> Back </b>to review the examples.  <br><br>
             <button class="btn" v-on:click="page -= 1" > << Back </button> 
             <button class="btn" v-on:click="setCurrTime" > Begin </button> 
@@ -103,7 +103,7 @@ export default {
     color: #283747;
   }
 
-  #text{
+  .text{
     padding-left: 5em;
     padding-right: 5em;
     font-size: 1em;
@@ -125,6 +125,4 @@ export default {
   img{
     width: 600px; 
   }
-
-
 </style>

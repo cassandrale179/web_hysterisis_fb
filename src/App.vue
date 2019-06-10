@@ -49,11 +49,16 @@ export default {
     font-family: 'Roboto'; 
   }
 
-
-  /* Native elements styling */ 
   a{
     color: white; 
   }
+
+  *:focus {
+    outline: 0 !important;
+}
+
+
+  /* App.vue styling */ 
 
   #A{
     padding: 0.7em; 
@@ -83,7 +88,6 @@ export default {
     text-overflow: ellipsis;
     text-transform: uppercase;
     background-color: black; 
-    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
     font-weight: 500;
     line-height: 36px;
     overflow: hidden;
@@ -91,6 +95,7 @@ export default {
     cursor: pointer;
     transition: box-shadow 0.2s;
     color: white; 
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   }
 
   
