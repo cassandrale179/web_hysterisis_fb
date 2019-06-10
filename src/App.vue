@@ -44,7 +44,6 @@ export default {
     width: 100%; 
     background-image: url('http://i.imgur.com/4Pp7dRg.jpg');   
     background-size: cover;  
-    text-align: center; 
     color: white; 
     font-family: 'Roboto'; 
   }
@@ -73,30 +72,5 @@ export default {
     padding-right: 0.5em; 
   }
 
-  /* Material design button */ 
-  .btn{
-    margin-top: 20px;
-    position: relative;
-    display: inline-block;
-    box-sizing: border-box;
-    border: none;
-    border-radius: 4px;
-    padding: 0 16px;
-    min-width: 64px;
-    height: 36px;
-    text-align: center;
-    text-overflow: ellipsis;
-    text-transform: uppercase;
-    background-color: black; 
-    font-weight: 500;
-    line-height: 36px;
-    overflow: hidden;
-    outline: none;
-    cursor: pointer;
-    transition: box-shadow 0.2s;
-    color: white; 
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  }
-
-  
+ 
 </style>

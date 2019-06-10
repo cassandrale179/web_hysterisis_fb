@@ -7,8 +7,8 @@
         <div v-if= "page < 5" >
           <h3>Introduction</h3>
           <div class="text"> In this task, press <b> t </b> if there are more triangles, press <b> c </b> if there are more circles. 
-            For <a href="" class="blue"> blue-colored</a> shape, focus on the <b> big </b> shapes. 
-            For  <a href="" class="green"> green-colored</a>  shape, focus on the <b>small </b> shapes 
+            For <a href="" class="bluetext"> blue-colored</a> shape, focus on the <b> big </b> shapes. 
+            For  <a href="" class="greentext"> green-colored</a>  shape, focus on the <b>small </b> shapes 
             that make up the big shapes.
           </div>
 
@@ -29,8 +29,10 @@
                 <img src="../assets/d4.png" /> 
                 <u>Example 4 (green = small):</u> There are <b> 8 triangles </b> and <b> 2 circles </b> in this picture. Press <b>t</b> 
             </div> 
+            <div style="text-align:center;">
             <button  v-on:click="page -= 1" class="btn"> << Back</button>
             <button  v-on:click="page += 1" class="btn"> Next >> </button> 
+            </div>
         </div>
 
           <!-- ____________  BEGIN EXPERIMENT HERE  _______________ --> 
@@ -39,8 +41,11 @@
             The experiment will begin. You will see <b>10 </b> slides of just blue shapes,  <b>10 </b> slieds of green shapes, 
             then  <b>10 </b> slides of blue, green, blue, green ...etc.  
             Click <b> Begin </b> when you are ready, or <b> Back </b>to review the examples.  <br><br>
-            <button class="btn" v-on:click="page -= 1" > << Back </button> 
-            <button class="btn" v-on:click="setCurrTime" > Begin </button> 
+
+            <div style="text-align:center;">
+              <button class="btn" v-on:click="page -= 1" > << Back </button> 
+              <button class="btn" v-on:click="setCurrTime" > Begin </button> 
+            </div>
             <h2> {{count}} seconds </h2>
           </div>
         
@@ -91,9 +96,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  h2{
+    text-align: center; 
+  }
   #container{
     padding: 2em; 
-    height: 45em;
+    height: 47em;
     background: white; 
     border-radius: 4px; 
     margin-left: 20em; 
@@ -103,17 +111,21 @@ export default {
     color: #283747;
   }
 
+  .example{
+    text-align: center; 
+  }
+
   .text{
     padding-left: 5em;
     padding-right: 5em;
     font-size: 1em;
   }
 
-  .blue{
+  .bluetext{
     font-weight: bold;
     color: #2471A3; 
   }
-  .green{
+  .greentext{
     font-weight: bold;
     color: #16A085;     
   }
@@ -124,5 +136,13 @@ export default {
 
   img{
     width: 600px; 
+    display: block; 
+    margin: auto; 
   }
+
+  button{
+    margin-top: 20px; 
+    background: black; 
+  }
+
 </style>
