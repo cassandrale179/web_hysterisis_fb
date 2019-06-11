@@ -56,6 +56,10 @@ export default {
     outline: 0 !important;
 }
 
+h2{
+			text-align: center; 
+		}
+
 
   /* App.vue styling */ 
 
@@ -70,6 +74,20 @@ export default {
 
   .A1{
     padding-right: 0.5em; 
+  }
+
+  button{
+    background: black;
+    color: white;
+    border-radius: 5px;
+    font-family: 'Roboto',sans-serif;
+    text-transform: uppercase;
+    margin-top: 20px; 
+    background: black; 
+    display: block;
+			margin: auto;
+			width: 8em;
+			height: 3em;
   }
 
  

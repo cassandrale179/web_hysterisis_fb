@@ -140,9 +140,4 @@ export default {
     margin: auto; 
   }
 
-  button{
-    margin-top: 20px; 
-    background: black; 
-  }
-
 </style>
