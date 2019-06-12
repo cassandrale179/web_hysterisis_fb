@@ -52,13 +52,32 @@ export default {
     color: white; 
   }
 
+  p{
+    text-align: center; 
+  }
+
   *:focus {
     outline: 0 !important;
 }
 
-h2{
+  h2{
 			text-align: center; 
-		}
+    }
+    
+  .error{
+    color: #A93226; 
+    font-style: italic; 
+    text-align: center; 
+    margin-top: 20px; 
+  }
+
+  .success{
+    color: #138D75; 
+    font-style: italic; 
+    text-align: center; 
+    margin-top: 20px; 
+  }
+
 
 
   /* App.vue styling */ 
@@ -89,6 +108,8 @@ h2{
 			width: 8em;
 			height: 3em;
   }
+
+  
 
  
 </style>
