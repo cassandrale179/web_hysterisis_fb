@@ -11,7 +11,7 @@
 				<input v-model="email" type="text" placeholder="Email">  </input>
 				<input v-model="age" type="number" placeholder="Age"> </input>
 				<br>
-				<button v-on:click="storeUserData()">Submit </button>
+				<button v-on:click="returnUserID_ifUserExist()">Submit </button>
 				<div class="error">{{errorMessage}}</div>
 			</form>
 		</div>
@@ -43,44 +43,51 @@ export default {
 
 		methods: {
 
-			/** Check if user has already signed up for the experiment 
-			 * @return {string | undefined} userID if user exist, undefined otherwise 
-			 */ 
+			/** 
+			 * Check if user has already signed up for the experiment 
+			 * Call @updateUserData if user exist, @setUserData otherwise 
+			 */  
 			returnUserID_ifUserExist(){
-				var promise = this.emailRef.once("value", snapshot => {
-					const emailObject = snapshot.val(); 
-					var exists = Object.keys(emailObject).some(function(k) {
-    				if (emailObject[k] === "lenguyetminh1998@gmail.com"){
-							console.log("k", k); 
-							this.userID = k; 
+				this.emailRef.once("value", snapshot => {
+						const emailObject = snapshot.val(); 
+						Object.keys(emailObject).some(key => {
+    				if (emailObject[key] === "lenguyetminh1998@gmail.com"){
+							this.updateUserData(key); 
+						} else {
+							this.setUserData(); 
 						}
-					});
-				})
+					}) 
+				}) 
 			}, 
 
 			/**
-			 * Store user data when submit form 
+			 * Update user data with given user id 
+			 * @param {string} key The user ID (e.g -LhDPLO7zDBZCWH_4J6s)
+			 */ 
+			updateUserData(key){
+				console.log("updateUserData key", key); 
+			}, 
+
+			/**
+			 * Create a new user data when submit form 
 			 * users {
 			 *    name: Jane Doe 
 			 * 		age: 20
 			 * 		experimentid: 001 ... 
 			 * } 
 			 */ 
-			storeUserData(){
-				 this.returnUserID_ifUserExist(); 
-				 console.log("this.userId", this.userID); 
-
+			setUserData(){
 				if (!this.name || !this.email || !this.age){
 					this.errorMessage = 'Please fill out all missing information on the form'; 
 				} else {
 
-					// Check if user data already exist in the datbase 
+				// 	Check if user data already exist in the datbase 
 					const newUsersInfo = this.userRef.push({
 						email: this.email, 
 						experimentId: 1, 
 						name: this.name, 
 						age: this.age 
-					}); 
+					});  
 
 					newUsersInfo.then(success => {
 						console.log("Store user data successfully"); 
@@ -102,13 +109,13 @@ export default {
 			 * Lh8PCik6ftXMGzeTjjk: "lenguyetminh1998@gmail.com"
 			 */ 
 			storeUserEmail(){
-					const emailObject = {}; 
-					emailObject[this.userID] = this.email; 
-					this.emailRef.update(emailObject).then(success => {
-						console.log("Store email successfully for this user", this.userID); 
-					}).catch(error => {
-						console.log("Unable to store email of user", error); 
-					}); 
+				const emailObject = {}; 
+				emailObject[this.userID] = this.email; 
+				this.emailRef.update(emailObject).then(success => {
+					console.log("Store email successfully for this user", this.userID); 
+				}).catch(error => {
+					console.log("Unable to store email of user", error); 
+				}); 
 			}
 		},
 
