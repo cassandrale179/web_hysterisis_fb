@@ -51,7 +51,7 @@ export default {
 				this.emailRef.once("value", snapshot => {
 						const emailObject = snapshot.val(); 
 						Object.keys(emailObject).some(key => {
-    				if (emailObject[key] === "lenguyetminh1998@gmail.com"){
+    				if (emailObject[key] === this.email){
 							this.updateUserData(key); 
 						} else {
 							this.setUserData(); 
@@ -81,10 +81,9 @@ export default {
 					this.errorMessage = 'Please fill out all missing information on the form'; 
 				} else {
 
-				// 	Check if user data already exist in the datbase 
+					// Check if user data already exist in the datbase 
 					const newUsersInfo = this.userRef.push({
 						email: this.email, 
-						experimentId: 1, 
 						name: this.name, 
 						age: this.age 
 					});  
