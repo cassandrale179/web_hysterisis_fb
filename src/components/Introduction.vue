@@ -5,7 +5,7 @@
 
          <!-- ____________  INSTRUCTION SLIDES DISPLAYING PART  _______________ -->  
         <div v-if= "page < 5" >
-          <h3>Introduction</h3>
+          <h2>Introduction</h2>
           <div class="text"> In this task, press <b> t </b> if there are more triangles, press <b> c </b> if there are more circles. 
             For <a href="" class="bluetext"> blue-colored</a> shape, focus on the <b> big </b> shapes. 
             For  <a href="" class="greentext"> green-colored</a>  shape, focus on the <b>small </b> shapes 
@@ -14,20 +14,24 @@
 
             <!-- ____________  INSTRUCTION SLIDES  _______________ --> 
             <div v-if="page <= 1" class="example">
-                <img src="../assets/d1.png" /> 
-                <u>Example 1 (blue = big):</u> There are <b> 4 triangles </b> and <b> 6 circles </b> in this picture. Press <b>c</b> 
+								<img src="../assets/d1.png" /> 
+								<u>Example 2 (blue = big):</u>
+                <p> There are <b> 4 triangles </b> and <b> 6 circles </b> in this picture. Press <b>c</b> </p>
             </div>
             <div v-if="page === 2" class="example">
                 <img src="../assets/d2.png" /> 
-                <u>Example 2 (blue = big):</u> There are <b> 8 triangles </b> and <b> 2 circles </b> in this picture. Press <b>t</b> 
+								<u>Example 2 (blue = big):</u> 
+								<p>There are <b> 8 triangles </b> and <b> 2 circles </b> in this picture. Press <b>t</b> </p>
             </div>
             <div v-if="page === 3" class="example">
                 <img src="../assets/d3.png" /> 
-                <u>Example 3 (green = small):</u> There are <b> 4 triangles </b> and <b> 6 circles </b> in this picture. Press <b>c</b> 
+								<u>Example 3 (green = small):</u> 
+								<p>There are <b> 4 triangles </b> and <b> 6 circles </b> in this picture. Press <b>c</b> </p>
             </div>
             <div v-if="page === 4" class="example">
                 <img src="../assets/d4.png" /> 
-                <u>Example 4 (green = small):</u> There are <b> 8 triangles </b> and <b> 2 circles </b> in this picture. Press <b>t</b> 
+								<u>Example 4 (green = small):</u> 
+								<p>There are <b> 8 triangles </b> and <b> 2 circles </b> in this picture. Press <b>t</b></p>
             </div> 
             <div style="text-align:center;">
             <button  v-on:click="page -= 1" class="btn"> << Back</button>
@@ -37,7 +41,7 @@
 
           <!-- ____________  BEGIN EXPERIMENT HERE  _______________ --> 
           <div class="text" v-if= "page >= 5" >
-            <h1> Expeirment </h1>  
+            <h1> Experiment </h1>  
             The experiment will begin. You will see <b>10 </b> slides of just blue shapes,  <b>10 </b> slieds of green shapes, 
             then  <b>10 </b> slides of blue, green, blue, green ...etc.  
             Click <b> Begin </b> when you are ready, or <b> Back </b>to review the examples.  <br><br>
@@ -90,9 +94,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  h2{
-    text-align: center; 
-  }
   #container{
     padding: 2em; 
     height: 47em;

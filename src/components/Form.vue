@@ -1,5 +1,5 @@
 <template>
-		<div id="container">
+		<div v-if="!userID" id="container">
 			<h2>Cognitive Flexibility Task</h2>
 			<p>Before you continue the expeirment, please fill in the information below. This is vital for data collecting purpose. </p>
 			<form>
@@ -111,7 +111,7 @@ export default {
 			border-radius: 4px; 
 			margin-left: 20em; 
 			margin-right: 20em; 
-			margin-top: 5.5em; 
+			margin-top: 10em; 
 			box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 			color: #283747;
 		}

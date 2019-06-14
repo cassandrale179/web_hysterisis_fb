@@ -27,10 +27,10 @@ let router = new Router({
       name: 'Experiment',
       component: Experiment
     },
-    {
-      path: '*',
-      redirect: '/form',
-    },
+    // {
+    //   path: '*',
+    //   redirect: '/form',
+    // },
     {
       path: '/sign-up',
       name: 'Signup',

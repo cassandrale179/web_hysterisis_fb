@@ -2,24 +2,35 @@
   <div id="app">
 
     <!-- Navigation Bar -->
-    <!-- <div id="A">
-      <router-link class="A1" to="/hello">Introduction</router-link>
-      <router-link class="A1" to="/sign-in"> Experiment</router-link>
-      <router-link class="A1" to="/sign-up"> Data</router-link>
-    </div> -->
-
-
+    <div id="A">
+        <div v-if="!currentUserID">
+            <Form></Form>
+        </div>
+      <div v-if="currentUserID">
+          <Introduction></Introduction>
+      </div>
+    </div> 
     <router-view/>
   </div>
 </template>
 
+
+
 <script>
 import {EventBus} from './event-bus.js'
+import Form from './components/Form';
+import Introduction from './components/Introduction'
+
 export default {
   name: 'App',
+
+  components: {
+    Form, Introduction
+  }, 
+
   data(){
     return {
-     
+      currentUserID: null, 
     }
   },
   watch:{
@@ -31,10 +42,11 @@ export default {
   },
   created(){
   }, 
-  
+
   mounted(){
     EventBus.$on("storedLocalUserID", (userID) => {  
-			console.log(`Oh, that's great. It's gotten clicks! :)`, userID);  
+      this.currentUserID = userID; 
+      localStorage.currentUserID = userID; 
 		});
   }
 }
@@ -59,13 +71,17 @@ export default {
     color: white; 
   }
 
+  h2{
+    text-align: center; 
+  }
+
   p{
     text-align: center; 
   }
 
   *:focus {
     outline: 0 !important;
-}
+  }
 
   h2{
 			text-align: center; 
@@ -85,23 +101,6 @@ export default {
     margin-top: 20px; 
   }
 
-
-
-  /* App.vue styling */ 
-
-  #A{
-    padding: 0.7em; 
-    height: 3em; 
-    text-align: left; 
-    font-family: 'Roboto', sans-serif; 
-    color: white; 
-    font-size: 20px;
-  }
-
-  .A1{
-    padding-right: 0.5em; 
-  }
-
   button{
     background: black;
     color: white;
@@ -111,12 +110,8 @@ export default {
     margin-top: 20px; 
     background: black; 
     display: block;
-			margin: auto;
-			width: 8em;
-			height: 3em;
+		margin: auto;
+		width: 8em;
+		height: 3em;
   }
-
-  
-
- 
-</style>
+</style>  
