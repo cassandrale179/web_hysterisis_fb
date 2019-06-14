@@ -7,6 +7,18 @@
 </template>
 
 
+<script>
+    export default {
+        name: 'HelloWorld',
+        data () {
+        return {
+        }
+        },
+    }
+
+    
+</script>
+
 <style scoped>
     #container{
         padding: 2em; 

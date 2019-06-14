@@ -63,10 +63,14 @@ export default {
       page : 1,  
       fireData: null, 
     }
-  },
-
+	},
+	
+	mounted() {
+   
+	}, 
+	
   methods:{
-
+	/* A countdown clock of 5 seconds before the official experiment began */ 
     setCurrTime: function(){
       this.intervalid1 = setInterval(function(){
         this.$data.count -= 1; 
@@ -75,21 +79,11 @@ export default {
           clearInterval(this.intervalid1); 
         } 
       }.bind(this), 1000);
-    
     }, 
-
-    // Fetch data from Firebase 
-    fetchFirebaseData(){
-      firebase.database().ref('users').on('value',(snapshot)=>{
-          this.fireData=snapshot.val();
-          console.log("this firedatada", this.fireData); 
-        });
-      }
-    },
-
+	},
   // Call default function when this page is first loaded 
   created(){
-    this.fetchFirebaseData();
+
   }
 }
 </script>
@@ -141,3 +135,5 @@ export default {
   }
 
 </style>
+
+

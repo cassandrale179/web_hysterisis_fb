@@ -2,11 +2,11 @@
   <div id="app">
 
     <!-- Navigation Bar -->
-    <div id="A">
-      <!-- <router-link class="A1" to="/hello">Introduction</router-link>
+    <!-- <div id="A">
+      <router-link class="A1" to="/hello">Introduction</router-link>
       <router-link class="A1" to="/sign-in"> Experiment</router-link>
-      <router-link class="A1" to="/sign-up"> Data</router-link> -->
-    </div>
+      <router-link class="A1" to="/sign-up"> Data</router-link>
+    </div> -->
 
 
     <router-view/>
@@ -14,21 +14,28 @@
 </template>
 
 <script>
+import {EventBus} from './event-bus.js'
 export default {
   name: 'App',
   data(){
     return {
-      authUser:null
+     
     }
   },
   watch:{
-    // '$route':'setAuthUser'
+   
   },
 
   methods:{
 
   },
   created(){
+  }, 
+  
+  mounted(){
+    EventBus.$on("storedLocalUserID", (userID) => {  
+			console.log(`Oh, that's great. It's gotten clicks! :)`, userID);  
+		});
   }
 }
 </script>
