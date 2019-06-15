@@ -1,5 +1,5 @@
 <template>
-		<div v-if="!userID" id="container">
+		<div v-if="userID == undefined" id="container">
 			<h2>Cognitive Flexibility Task</h2>
 			<p>Before you continue the expeirment, please fill in the information below. This is vital for data collecting purpose. </p>
 			<form>
@@ -43,13 +43,18 @@ export default {
 		 */  
 		returnUserID_ifUserExist(){
 			this.emailRef.once("value", snapshot => {
-					const emailObject = snapshot.val(); 
-					Object.keys(emailObject).some(key => {
-				if (emailObject[key] === this.email){
-					EventBus.$emit("storedLocalUserID", key);    
-					} else {
-						this.setUserData(); 
-					}
+				const emailObject = snapshot.val(); 
+				if (!emailObject){
+					this.setUserData();  
+					return; 
+				}
+				Object.keys(emailObject).some(key => {
+					if (emailObject[key] === this.email){
+						EventBus.$emit("storedLocalUserID", key);    
+						localStorage.setItem('userID', key);  
+						} else {
+							this.setUserData(); 
+						}
 				}) 
 			}) 
 		}, 
@@ -78,6 +83,7 @@ export default {
 					this.userID = newUsersInfo.key; 
 					this.storeUserEmail(); 
 					EventBus.$emit("storedLocalUserID", this.userID);     
+					localStorage.setItem('userID', this.userID);   
 				}).catch(error => {
 					console.log("error, unable to do pushed user information", error); 
 					return; 
