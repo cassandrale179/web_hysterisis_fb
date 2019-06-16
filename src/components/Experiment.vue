@@ -2,7 +2,8 @@
 <template>
     <div v-if="userID" class="hello">
         <div id="container">
-            <h2>Slide 1</h2>
+			<h2>Slide {{currentSlideNumber}}</h2>
+			<img :src="currentSlidePath" />
         </div>
     </div>
 </template>
@@ -14,12 +15,18 @@ export default {
 	data () {
 		return {
 			userID: undefined, 
-			slideData: [],
+			cue: 'blueglobal_greenlocal', 
 
 			// Slides variable
-			cue: 'blueglobal_greenlocal', 
-			lowContrast: ['4060', '6040'], 
-			highContrast: ['2080', '8020'], 
+			randomBlueSlides: [], 
+			randomGreenSlides: [],  
+			randomSwitchingSlides: [], 
+
+			// Information about current slide 
+			currentSlidePath: '', 
+			currentSlideNumber: 0, 
+			currentSlideBlock: 1, 
+			currentSlideBlockName: 'blue'
 		}
 	},
   
@@ -35,9 +42,10 @@ export default {
 		generateSamplesForEachRatio(folder, ratio1, ratio2){
 			const totalSlidesPerDirectory = 15; 
 			let slidesData = []; 
+			let absolutePath = "static/"; 
 			for (var i = 0; i < totalSlidesPerDirectory; i++){
-				const slidePathName1 = folder + '/' + ratio1 + '/' + i.toString() + '.png'; 
-				const slidePathName2 = folder + '/' + ratio2 + '/' + i.toString() + '.png';  
+				const slidePathName1 = absolutePath + folder + '/' + ratio1 + '/' + i.toString() + '.png'; 
+				const slidePathName2 = absolutePath + folder + '/' + ratio2 + '/' + i.toString() + '.png';  
 				slidesData.push(slidePathName1); 
 				slidesData.push(slidePathName2);  
 			}
@@ -80,31 +88,72 @@ export default {
 				randomSwitchingSlides.push(randomSlide); 
 			}	
 			return randomSwitchingSlides;  
-		}
+		}, 
+
+
+		displaySlides(){
+			this.intervalid1 = setInterval(function(){
+			this.currentSlideNumber += 1; 
+			this.currentSlidePath = this.currentBlock[this.currentSlideNumber]; 
+        if (this.currentSlideNumber == 9){
+          clearInterval(this.intervalid1); 
+					// this.currentSlideBlock +=1; 
+					this.currentSlideNumber = -1; 
+        } 
+      }.bind(this), 3000);
+	},
+
+
+
 	}, 
+	
 
 	created(){
 		// Get user id from local storage 
 		this.userID = localStorage.getItem('userID'); 
 
-		// Create 10 blue slides 
+		// Create 10 blue slides of low and high ratio 
 		let blueGlobalLowContrast = this.generateSamplesForEachRatio('blueglobal', '6040', '4060'); 
 		let blueGlobalHighContrast = this.generateSamplesForEachRatio('blueglobal', '2080', '8020');  
 		let blueSlides = blueGlobalLowContrast.concat(blueGlobalHighContrast); 
-		let randomBlueSlides = this.generateRandomSlidesData(blueSlides); 
+		this.randomBlueSlides = this.generateRandomSlidesData(blueSlides); 
 
-		// Create 10 green slides 
+		// Create 10 green slides of low and high ratio 
 		let greenGlobalLowContrast = this.generateSamplesForEachRatio('greenlocal', '6040', '4060'); 
 		let greenGlobalHighContrast = this.generateSamplesForEachRatio('greenlocal', '2080', '8020');  
 		let greenSlides = greenGlobalLowContrast.concat(greenGlobalHighContrast); 
-		let randomGreenSlides = this.generateRandomSlidesData(greenSlides); 
+		this.randomGreenSlides = this.generateRandomSlidesData(greenSlides); 
 
-		// Create 10 switching slides
-		let randomSwithingSlides = this.generateSwitchingSlides(blueSlides, greenSlides);  
+		// Create 10 switching slides (blue, green, blue, green, blue, green)
+		this.randomSwithingSlides = this.generateSwitchingSlides(blueSlides, greenSlides);  
+
+		
+		// if (this.currentSlideBlock == 1 && this.currentSlideNumber < 10){
+			this.currentBlock = this.randomBlueSlides; 
+			this.currentSlideBlockName = 'blue';  
+			this.displaySlides();  
+
+
+			// this.currentSlideBlock = 2; 
+			// this.currentBlock = this.randomGreenSlides;  
+			// this.currentSlideBlockName = 'green';  
+			// this.displaySlides();  
+
+
+			// this.currentBlock = this.randomSwitchingSlides;  
+			// this.currentSlideBlockName = 'switching';  
+			// this.displaySlides();  
+
+
+		// } else if (this.currentSlideBlock == 1 && this.currentSlideNumber < 10){
+
+		// }
+		
+		
+	
 	}
 }
 
-    
 </script>
 <style scoped>
     #container{
@@ -112,8 +161,8 @@ export default {
         height: 45em;
         background: white; 
         border-radius: 4px; 
-        margin-left: 20em; 
-        margin-right: 20em; 
+        margin-left: 18em; 
+        margin-right: 18em; 
         margin-top: 5em;
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         color: #283747;
@@ -139,9 +188,9 @@ export default {
     }
     
     img{
-        width: 600px; 
+        width: 900px; 
     }
-
+	
   
 </style>
       
