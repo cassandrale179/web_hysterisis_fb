@@ -2,8 +2,20 @@
 <template>
     <div v-if="userID" class="hello">
         <div id="container">
-			<h2>Slide {{currentSlideNumber}}</h2>
-			<img :src="currentSlidePath" />
+
+				<div v-if="beginExperiment">
+						<h2 v-if="currentSlideNumber == 0"> Block {{currentBlockNumber}}</h2> 
+						<div v-if="currentSlideNumber > 0"> 
+							<h3>	Slide {{currentSlideNumber}}  </h3>
+							<p>Press <b>t</b> for triangle, and <b>c</b> for circle </p>
+								<img :src="currentSlidePath" /> 
+						</div> 
+				</div>
+
+				<div v-if="!beginExperiment">
+					<h2> Thank you for taking the experiment </h2>
+				</div>
+
         </div>
     </div>
 </template>
@@ -13,9 +25,13 @@
 export default {
 	name: 'HelloWorld',
 	data () {
+
+				
 		return {
 			userID: undefined, 
 			cue: 'blueglobal_greenlocal', 
+
+			beginExperiment: true, 
 
 			// Slides variable
 			randomBlueSlides: [], 
@@ -23,12 +39,27 @@ export default {
 			randomSwitchingSlides: [], 
 
 			// Information about current slide 
+			currentBlock: [], 
 			currentSlidePath: '', 
 			currentSlideNumber: 0, 
-			currentSlideBlock: 1, 
-			currentSlideBlockName: 'blue'
+			currentBlockNumber: 1, 
 		}
 	},
+
+	watch : {
+		/**
+			This function is called every time the variable currenBlockNumber
+			is changed. This signifies user finish answeriing question for 
+			10 slides. 
+		*/ 
+		currentBlockNumber: function(oldBlockNumber, newBlockNumber){
+			if (newBlockNumber < 3){
+				this.displaySlides();  
+			} else {
+				this.beginExperiment = false; 
+			}
+		}
+	}, 
   
 	methods: {
 		/** 
@@ -68,7 +99,7 @@ export default {
 			return randomSlides;  
 		}, 
 
-	/** 
+		/** 
 			Generate an array that contains random switching slides from an array 
 			@param {array[string]} blueSlides, array contains 28 filepath name for 2 given ratios in blue.  
 			@param {array[string]} greenSlides, array contains 28 filepath name for 2 given ratios in green.  
@@ -90,23 +121,41 @@ export default {
 			return randomSwitchingSlides;  
 		}, 
 
-
+		/** 
+			Function that set an interval running ever 2.5 seconds and flash each slide 
+			onto the screen for the user to see 
+		*/ 
 		displaySlides(){
 			this.intervalid1 = setInterval(function(){
-			this.currentSlideNumber += 1; 
-			this.currentSlidePath = this.currentBlock[this.currentSlideNumber]; 
-        if (this.currentSlideNumber == 9){
-          clearInterval(this.intervalid1); 
-					// this.currentSlideBlock +=1; 
-					this.currentSlideNumber = -1; 
+				this.currentSlideNumber += 1; 
+
+				// this.currentBlockNumber = 3; 
+
+				if (this.currentBlockNumber == 1){
+					this.currentBlock = this.randomBlueSlides; 
+				} else if (this.currentBlockNumber == 2){
+					this.currentBlock = this.randomGreenSlides;  
+				} else if (this.currentBlockNumber == 3){
+					this.currentBlock = this.randomSwitchingSlides; 
+				} else {
+					this.currentBlock = []
+				}
+
+				console.log("third one", this.currentBlock); 
+
+				console.log("thiscurrentblocknumber", this.currentBlockNumber, this.currentBlock); 
+		
+				this.currentSlidePath = this.currentBlock[this.currentSlideNumber]; 
+				console.log("thiscurrentslidepath", this.currentSlidePath); 
+			
+        if (this.currentSlideNumber == 9 || this.currentBlock == []){
+					this.currentBlockNumber +=1; 
+					this.currentSlideNumber = 0; 
+					clearInterval(this.intervalid1);  
         } 
-      }.bind(this), 3000);
-	},
-
-
-
+      }.bind(this), 500);
+		},
 	}, 
-	
 
 	created(){
 		// Get user id from local storage 
@@ -125,32 +174,13 @@ export default {
 		this.randomGreenSlides = this.generateRandomSlidesData(greenSlides); 
 
 		// Create 10 switching slides (blue, green, blue, green, blue, green)
-		this.randomSwithingSlides = this.generateSwitchingSlides(blueSlides, greenSlides);  
+		this.randomSwitchingSlides = this.generateSwitchingSlides(blueSlides, greenSlides);  
 
-		
-		// if (this.currentSlideBlock == 1 && this.currentSlideNumber < 10){
-			this.currentBlock = this.randomBlueSlides; 
-			this.currentSlideBlockName = 'blue';  
-			this.displaySlides();  
+		console.log(this.randomBlueSlides); 
+		console.log(this.randomSwitchingSlides); 
 
-
-			// this.currentSlideBlock = 2; 
-			// this.currentBlock = this.randomGreenSlides;  
-			// this.currentSlideBlockName = 'green';  
-			// this.displaySlides();  
-
-
-			// this.currentBlock = this.randomSwitchingSlides;  
-			// this.currentSlideBlockName = 'switching';  
-			// this.displaySlides();  
-
-
-		// } else if (this.currentSlideBlock == 1 && this.currentSlideNumber < 10){
-
-		// }
-		
-		
-	
+		// Display the slides onto the screen 
+		this.displaySlides();  
 	}
 }
 
@@ -166,6 +196,7 @@ export default {
         margin-top: 5em;
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         color: #283747;
+				text-align: center; 
     }
     
     .text{
