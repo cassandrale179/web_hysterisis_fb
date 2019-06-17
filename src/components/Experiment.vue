@@ -2,7 +2,6 @@
 <template>
     <div v-if="userID" class="hello">
         <div id="container">
-
 				<div v-if="beginExperiment">
 						<h2 v-if="currentSlideNumber == 0"> Block {{currentBlockNumber}}</h2> 
 						<div v-if="currentSlideNumber > 0"> 
@@ -11,45 +10,53 @@
 								<img :src="currentSlidePath" /> 
 						</div> 
 				</div>
-
 				<div v-if="!beginExperiment">
 					<h2> Thank you for taking the experiment </h2>
 				</div>
-
         </div>
     </div>
 </template>
-
 
 <script>
 export default {
 	name: 'HelloWorld',
 	data () {
-
-				
 		return {
 			userID: undefined, 
 			cue: 'blueglobal_greenlocal', 
-
 			beginExperiment: true, 
 
-			// Slides variable
+			// Each slide array contain 10 slides 
 			randomBlueSlides: [], 
 			randomGreenSlides: [],  
 			randomSwitchingSlides: [], 
 
-			// Information about current slide 
+			// Each block is blue, green or switching slides 
 			currentBlock: [], 
-			currentSlidePath: '', 
-			currentSlideNumber: 0, 
 			currentBlockNumber: 1, 
+
+			// Each slide has a path, their current number (1-10)
+			// and a ratio (2080, or 1090...etc.)
+ 			currentSlidePath: '', 
+			currentSlideNumber: 0, 
+			currentSlideRatio: 0, 
+
+			// User key press event 
+			keyPress: undefined, 
+			correct: 0,  
+			eventTimeStamp: undefined, 
+			slideAppear: undefined, 
+			slideDisappear: undefined, 
+
+			// Array of objects be pushed to firebase
+			userAnswersArray: [], 
 		}
 	},
 
 	watch : {
 		/**
 			This function is called every time the variable currenBlockNumber
-			is changed. This signifies user finish answeriing question for 
+			is changed. This signifies user finish answers question for the 
 			10 slides. 
 		*/ 
 		currentBlockNumber: function(oldBlockNumber, newBlockNumber){
@@ -58,6 +65,10 @@ export default {
 			} else {
 				this.beginExperiment = false; 
 			}
+		},
+
+		currentSlidePath: function(oldPath, newPath){
+
 		}
 	}, 
   
@@ -75,8 +86,10 @@ export default {
 			let slidesData = []; 
 			let absolutePath = "static/"; 
 			for (var i = 0; i < totalSlidesPerDirectory; i++){
-				const slidePathName1 = absolutePath + folder + '/' + ratio1 + '/' + i.toString() + '.png'; 
-				const slidePathName2 = absolutePath + folder + '/' + ratio2 + '/' + i.toString() + '.png';  
+				const slidePathName1 = absolutePath + folder + '/' + 
+					ratio1 + '/' + i.toString() + '.png'; 
+				const slidePathName2 = absolutePath + folder + '/' + 
+					ratio2 + '/' + i.toString() + '.png';  
 				slidesData.push(slidePathName1); 
 				slidesData.push(slidePathName2);  
 			}
@@ -93,7 +106,8 @@ export default {
 			const numberOfSlidesPerBlock = 10;  
 			let randomSlides = []; 
 			for (var i = 0; i < numberOfSlidesPerBlock; i++){
-				const randomSlide = slidesArrayToChooseFrom[Math.floor(Math.random() * slidesArrayToChooseFrom.length)]; 
+				const randomSlide = slidesArrayToChooseFrom[
+					Math.floor(Math.random() * slidesArrayToChooseFrom.length)]; 
 				randomSlides.push(randomSlide); 
 			}	
 			return randomSlides;  
@@ -121,16 +135,21 @@ export default {
 			return randomSwitchingSlides;  
 		}, 
 
-		/** 
-			Function that set an interval running ever 2.5 seconds and flash each slide 
-			onto the screen for the user to see 
-		*/ 
+		/**
+		 * Function that set an interval running ever 2.5 seconds and flash each slide 
+		 * onto the screen for the user to see  
+		 */ 
 		displaySlides(){
 			this.intervalid1 = setInterval(function(){
 				this.currentSlideNumber += 1; 
 
-				// this.currentBlockNumber = 3; 
-
+				// Set the timestamp
+				if (this.currentTime){
+					this.previousTime = this.currentTime; 
+				} 
+				this.currentTime = performance.now(); 
+				
+				// Set the block to be run (green, blue, or switching)
 				if (this.currentBlockNumber == 1){
 					this.currentBlock = this.randomBlueSlides; 
 				} else if (this.currentBlockNumber == 2){
@@ -140,21 +159,76 @@ export default {
 				} else {
 					this.currentBlock = []
 				}
-
-				console.log("third one", this.currentBlock); 
-
-				console.log("thiscurrentblocknumber", this.currentBlockNumber, this.currentBlock); 
-		
 				this.currentSlidePath = this.currentBlock[this.currentSlideNumber]; 
-				console.log("thiscurrentslidepath", this.currentSlidePath); 
-			
+
+				// Validate if user answer correctly or not and store their answer
+				if (this.currentSlideNumber > 0 && this.currentBlockNumber < 3){
+					const correct = this.validateUserAnswer(this.keyPress); 
+					let responseTime = 2.5; 
+					if (this.eventTimeStamp){
+						responseTime = (this.eventTimeStamp - this.previousTime) / 1000; 
+						responseTime = Number.parseFloat(responseTime).toPrecision(3); 
+					} 
+					this.storeUserData(
+						correct, 
+						this.keyPress, 
+						responseTime, 
+						this.currentSlideRatio); 
+				}
+
+				// Move to a new block number or end experiment when block = 3
         if (this.currentSlideNumber == 9 || this.currentBlock == []){
 					this.currentBlockNumber +=1; 
 					this.currentSlideNumber = 0; 
 					clearInterval(this.intervalid1);  
         } 
-      }.bind(this), 500);
+      }.bind(this), /* Run slide every 2.5 seconds */ 2500); 
 		},
+
+		/** 
+		 * User press t if more triangles, and c if more circles
+		 * @param {string} key The character 't' or 'c'
+		 * @return {number} 1 if the answer is correct, else 0
+		 */ 
+		validateUserAnswer(key){
+			const n = this.currentSlidePath.indexOf("al/"); 
+			const ratio = this.currentSlidePath.substring(n+3, n+7); 
+			const triangles = ratio[0];
+			const circles = ratio[2]; 
+			this.currentSlideRatio = ratio; 
+			if (triangles > circles && key == 84){
+				return 1; 
+			} else if (triangles < circles && key == 67){
+				return 1; 
+			} 
+			return 0; 
+		}, 
+
+
+		/**
+		 * This will create a slide object to be pushed to Firebase 
+		 */ 
+		storeUserData(correct, keyPress, responseTime, ratio){
+			let blockName = ''; 
+			if (this.currentBlockNumber == 1){
+				blockName = 'blue_global'
+			} else if (this.blockNumber == 2){
+				blockName = "green_local" 
+			} else {
+				blockName = 'switching'
+			}
+			const slideObject = {
+				blockName: blockName, 
+				correct: correct, 
+				keyPress: keyPress, 
+				responseTime: responseTime, 
+				ratio: ratio, 
+			}
+			this.userAnswersArray.push(slideObject); 
+			this.keyPress = undefined; 
+			this.eventTimeStamp = undefined; 
+			this.currentSlideRatio = undefined; 
+		}
 	}, 
 
 	created(){
@@ -176,12 +250,19 @@ export default {
 		// Create 10 switching slides (blue, green, blue, green, blue, green)
 		this.randomSwitchingSlides = this.generateSwitchingSlides(blueSlides, greenSlides);  
 
-		console.log(this.randomBlueSlides); 
-		console.log(this.randomSwitchingSlides); 
-
 		// Display the slides onto the screen 
 		this.displaySlides();  
-	}
+	}, 
+
+
+	mounted() {
+			/* Listen for when user press keboard */ 
+			window.addEventListener('keyup', event => {
+				if (event.keyCode === 84 || event.keyCode == 67) { 
+					this.keyPress = event.keyCode; 
+					this.eventTimeStamp = event.timeStamp; 
+				}}); 
+    },  
 }
 
 </script>
