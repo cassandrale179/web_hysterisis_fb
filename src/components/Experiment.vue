@@ -3,8 +3,8 @@
     <div v-if="userID" class="hello">
         <div id="container">
 				<div v-if="beginExperiment">
-						<h2 v-if="currentSlideNumber == 0"> Block {{currentBlockNumber}}</h2> 
-						<div v-if="currentSlideNumber > 0"> 
+						<h2 v-if="currentSlideNumber == -1"> Block {{currentBlockNumber}}</h2> 
+						<div v-if="currentSlideNumber >= 0"> 
 							<h3>	Slide {{currentSlideNumber}}  </h3>
 							<p>Press <b>t</b> for triangle, and <b>c</b> for circle </p>
 								<img :src="currentSlidePath" /> 
@@ -38,7 +38,7 @@ export default {
 			// Each slide has a path, their current number (1-10)
 			// and a ratio (2080, or 1090...etc.)
  			currentSlidePath: '', 
-			currentSlideNumber: 0, 
+			currentSlideNumber: -1, 
 			currentSlideRatio: 0, 
 
 			// User key press event 
@@ -64,11 +64,8 @@ export default {
 				this.displaySlides();  
 			} else {
 				this.beginExperiment = false; 
+				console.log("Experiment ifnished", this.userAnswersArray); 
 			}
-		},
-
-		currentSlidePath: function(oldPath, newPath){
-
 		}
 	}, 
   
@@ -162,7 +159,7 @@ export default {
 				this.currentSlidePath = this.currentBlock[this.currentSlideNumber]; 
 
 				// Validate if user answer correctly or not and store their answer
-				if (this.currentSlideNumber > 0 && this.currentBlockNumber < 3){
+				if (this.currentSlideNumber >= 0 && this.currentBlockNumber < 4){
 					const correct = this.validateUserAnswer(this.keyPress); 
 					let responseTime = 2.5; 
 					if (this.eventTimeStamp){
@@ -179,10 +176,10 @@ export default {
 				// Move to a new block number or end experiment when block = 3
         if (this.currentSlideNumber == 9 || this.currentBlock == []){
 					this.currentBlockNumber +=1; 
-					this.currentSlideNumber = 0; 
+					this.currentSlideNumber = -1; 
 					clearInterval(this.intervalid1);  
         } 
-      }.bind(this), /* Run slide every 2.5 seconds */ 2500); 
+      }.bind(this), /* Run slide every 2.5 seconds */ 500); 
 		},
 
 		/** 
@@ -204,7 +201,6 @@ export default {
 			return 0; 
 		}, 
 
-
 		/**
 		 * This will create a slide object to be pushed to Firebase 
 		 */ 
@@ -212,7 +208,7 @@ export default {
 			let blockName = ''; 
 			if (this.currentBlockNumber == 1){
 				blockName = 'blue_global'
-			} else if (this.blockNumber == 2){
+			} else if (this.currentBlockNumber == 2){
 				blockName = "green_local" 
 			} else {
 				blockName = 'switching'
@@ -224,6 +220,7 @@ export default {
 				responseTime: responseTime, 
 				ratio: ratio, 
 			}
+			console.log("slideObject", slideObject);  
 			this.userAnswersArray.push(slideObject); 
 			this.keyPress = undefined; 
 			this.eventTimeStamp = undefined; 
