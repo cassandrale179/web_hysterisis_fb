@@ -23,8 +23,6 @@ npm run build --report
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
-
-
 - For development on Chrome OS, follow this guide here to install Node.js and NPM: https://medium.com/@jacoboakley/web-development-with-a-chromebook-installing-nodejs-4e358b82a31b 
 
 
@@ -33,45 +31,31 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 ### 1.1 The folder structure:  
 ```
-├── app 
-│   ├── scripts 
-│   |    └── views 
-|   |          └── components (Modify inner component here) 
-|   |                 ├── bigcircle.vue 
-|   |                 ├── bigtriangle.vue 
-|   |                 ├── form.vue 
-|   |                 ├── intro.vue 
-|   |                 └── one-slide.vue 
-|   |          └── layouts 
-|   |                 └── app.vue (Main app here, parent of all components) 
-│   |    └── main.js (Import BalmUI CSS file here) 
-│   ├── styles
-│   └── index.html  
-├── config
+├── src 
+│   ├── components 
+|   |   ├── form.vue          
+|   |   ├── introduction.vue 
+|   |   ├── experiment.vue 
+│   |   └── conclusion.js (Import BalmUI CSS file here) 
+│   ├── routers
+│   |   └── index.js (Import BalmUI CSS file here) 
+│   └── App.vue  
+├── static (image slides) 
+|     ├── blueglobal
+|     ├── bluelocal
+|     ├── greenglobal
+|     └── greenlocal 
 ├── node_modules 
 └── README.md
 
 ```
 
 ### 1.1 Component Structure
-```
-├── app.vue 
-│   ├── form.vue  
-│   ├── intro.vue 
-│   └── oneslide.vue 
-│         ├── bigcircle.vue
-│         └── bigtriangle.vue
-└── README.md
-```
-
-- The `app.vue` has 3 nested components: 
+- The `app.vue` has 4 components: 
    - **Form.vue**: this creates a form for the user to input their information 
-   - **Intro.vue**: this displayed 4 examples for the introduction slides 
-   - **Oneslide.vue**: this renders all the circle and triangle based on a given ratio 
-- The `oneslide.vue` has two child components: 
-   - **bigcircle.vue**: this create a big shaped circle, make up of 10 smaller shapes inside it 
-   - **bigtriangle.vue**: this create a big shaped triangle make up of 10 smaller shapes inside it  
-
+   - **Introduction.vue**: this displayed 4 examples for the introduction slides 
+   - **Experiment.vue**: this renders all the circle and triangle based on a given ratio 
+   - **Conclusion.vue**: this displays all the data after user action completes   
 
 ## 2. Task Design 
 - **A slide** contain 10 big shapes, each big shape contain 10 small shapes 
