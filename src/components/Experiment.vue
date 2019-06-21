@@ -10,10 +10,20 @@
 								<img :src="currentSlidePath" /> 
 						</div> 
 				</div>
+
+				<!-- Display final results -->
 				<div v-if="!beginExperiment">
 					<h2> Thank you for taking the experiment </h2>
+					<div class="slidecontainer">
+							<p>Total correct responses for blue blocks: {{correctBlueResponse}} / 10 </p>
+							<input type="range" min="1" max="10" value="correctBlueResponse" class="slider" id="myRange">
+							<p>Total correct responses for blue blocks: {{correctGreenResponse}} / 10 </p>
+							<input type="range" min="1" max="10" value="correctGreenResponse" class="slider" id="myRange">
+							<p>Total correct responses for switching blocks: {{correctSwitchingResponse}} / 10</p>
+							<input type="range" min="1" max="10" value="correctSwitchingResponse" class="slider" id="myRange">
+						</div> 
 				</div>
-        </div>
+      </div>
     </div>
 </template>
 
@@ -50,6 +60,9 @@ export default {
 
 			// Array of objects be pushed to firebase
 			userAnswersArray: [], 
+			correctBlueResponse: 0, 
+			correctGreenResponse: 0, 
+			correctSwitchingResponse: 0, 
 		}
 	},
 
@@ -64,7 +77,7 @@ export default {
 				this.displaySlides();  
 			} else {
 				this.beginExperiment = false; 
-				console.log("Experiment ifnished", this.userAnswersArray); 
+				this.pushUserAnswerToFirebase(); 
 			}
 		}
 	}, 
@@ -179,7 +192,7 @@ export default {
 					this.currentSlideNumber = -1; 
 					clearInterval(this.intervalid1);  
         } 
-      }.bind(this), /* Run slide every 2.5 seconds */ 500); 
+      }.bind(this), /* Run slide every 2.5 seconds */ 100); 
 		},
 
 		/** 
@@ -205,6 +218,13 @@ export default {
 		 * This will create a slide object to be pushed to Firebase 
 		 */ 
 		storeUserData(correct, keyPress, responseTime, ratio){
+			if (keyPress == 67){
+				keyPress = 'c'; 
+			} else if (keyPress == 84){
+				keyPress = 't'; 
+			} else {
+				keyPress = ''; 
+			}
 			let blockName = ''; 
 			if (this.currentBlockNumber == 1){
 				blockName = 'blue_global'
@@ -220,12 +240,62 @@ export default {
 				responseTime: responseTime, 
 				ratio: ratio, 
 			}
-			console.log("slideObject", slideObject);  
 			this.userAnswersArray.push(slideObject); 
 			this.keyPress = undefined; 
 			this.eventTimeStamp = undefined; 
 			this.currentSlideRatio = undefined; 
-		}
+		}, 
+
+			/** 
+			Generate an array that contains all the slide path name in random order 
+		*/ 
+		pushUserAnswerToFirebase(){
+			// Filter out slides that are part of the each block 
+			const blueSlides = this.userAnswersArray.filter((slide) => {
+				return (slide.blockName === "blue_global");
+			}); 
+			const greenSlides = this.userAnswersArray.filter((slide) => {
+				return (slide.blockName === "green_local");
+			}); 
+			const switchingSlides = this.userAnswersArray.filter((slide) => {
+				return (slide.blockName === "switching");
+			});  
+
+			const ref = firebase.database().ref('users/' + this.userID + '/experiment/');  
+			ref.once('value', snapshot => {
+				const experimentVal = snapshot.val(); 
+				let experimentKey = 'experiment_1'; 
+				if (experimentVal){
+					console.log("experimentVal", experimentVal); 
+					const numberOfExperiments = Object.keys(experimentVal).length; 
+					experimentKey = 'experiment_' + String(numberOfExperiments + 1); 
+					console.log("experimentKey", experimentKey); 
+				} 
+				const experimentObject = {
+					'blue_global': blueSlides, 
+					'green_local': greenSlides,
+					'switching': switchingSlides 
+				} 
+				ref.child(experimentKey).set(experimentObject); 
+			})  
+			this.countCorrectResponse(blueSlides, greenSlides, switchingSlides); 
+		}, 
+
+		/* Count how many correct responses per block from users */ 
+		countCorrectResponse(blueSlides, greenSlides, switchingSlides){
+			const correctBlueResponse = blueSlides.filter((slide) => {
+				return (slide.correct === 1) 
+			}); 
+			this.correctBlueResponse = correctBlueResponse.length; 
+			const correctGreenResponse = greenSlides.filter((slide) => {
+				return (slide.correct === 1) 
+			}); 
+			this.correctGreenResponse = correctGreenResponse.length;  
+			const correctSwitchingResponse = switchingSlides.filter((slide) => {
+				return (slide.correct === 1) 
+			});  
+			this.correctSwitchingResponse = correctSwitchingResponse.length; 
+		}, 
 	}, 
 
 	created(){
@@ -299,7 +369,34 @@ export default {
     img{
         width: 900px; 
     }
-	
+
+		.slidecontainer {
+  width: 100%;
+}
+
+	.slider {
+		appearance: none;
+		width: 100%;
+		height: 25px;
+		background: #d3d3d3;
+		outline: none;
+		opacity: 0.7;
+		-webkit-transition: .2s;
+		transition: opacity .2s;
+	}
+
+	.slider:hover {
+		opacity: 1;
+	}
+
+	.slider::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 25px;
+		height: 25px;
+		background: #4CAF50;
+		cursor: pointer;
+	}
   
 </style>
       
