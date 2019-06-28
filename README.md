@@ -71,26 +71,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - User press **t** if there is more triangle, **c** if there is more circle within **2.5** second time frame 
 
 
-## 3. Code 
-- This is more daunting to document, but here are some important functions: 
-
-
-## 4.  Running this webapp (for developers) 
-- Follow the tutorial here to get the project set up with BalmUI: 
-https://material.balmjs.com/#/guide/quickstart 
-- To run the file: 
-`npm run dev` 
-
-- If successful, you should be able to see this
-```bash 
-[BalmJS] Access URLs:
- --------------------------------------
-       Local: http://localhost:3000
-    External: http://10.250.110.26:3000
- --------------------------------------
-``` 
-
-## 5. Recommending Resources (can be learn in 2 weeks)
+## 3. Recommending Resources: 
 - **Official Documentation**: https://vuejs.org/v2/guide/ 
 - **Important functions** used within this code: 
    - **Components (nested)**: https://vuejs.org/v2/guide/components-registration.html 
