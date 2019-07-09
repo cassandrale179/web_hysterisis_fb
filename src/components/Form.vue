@@ -1,5 +1,5 @@
 <template>
-		<div v-if="userID == undefined" id="container">
+		<div id="container">
 			<h2>Cognitive Flexibility Task</h2>
 			<p>Before you continue the expeirment, please fill in the information below. This is vital for data collecting purpose. </p>
 			<form>
@@ -111,25 +111,25 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
    #container{
-			padding: 2em; 
-			height: 30em;
-			background: white; 
-			border-radius: 4px; 
-			margin-left: 20em; 
-			margin-right: 20em; 
-			margin-top: 10em; 
-			box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-			color: #283747;
-		}
+		padding: 2em; 
+		height: 30em;
+		background: white; 
+		border-radius: 4px; 
+		margin-left: 20em; 
+		margin-right: 20em; 
+		margin-top: 10em; 
+		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+		color: #283747;
+	}
 		
-		input{
-			height: 3em;
-			display: block; 
-			width: 30em;
-			margin-bottom: 1em;
-			margin: auto;
-			border: 0px; 
-			border-bottom: 1px #E5E7E9  solid; 
-		}
+	input{
+		height: 3em;
+		display: block; 
+		width: 30em;
+		margin-bottom: 1em;
+		margin: auto;
+		border: 0px; 
+		border-bottom: 1px #E5E7E9  solid; 
+	}
 
 </style>

@@ -192,7 +192,7 @@ export default {
 					this.currentSlideNumber = -1; 
 					clearInterval(this.intervalid1);  
         } 
-      }.bind(this), /* Run slide every 2.5 seconds */ 100); 
+      }.bind(this), /* Run slide every 2.5 seconds */ 2500); 
 		},
 
 		/** 
@@ -323,12 +323,12 @@ export default {
 
 
 	mounted() {
-			/* Listen for when user press keboard */ 
-			window.addEventListener('keyup', event => {
-				if (event.keyCode === 84 || event.keyCode == 67) { 
-					this.keyPress = event.keyCode; 
-					this.eventTimeStamp = event.timeStamp; 
-				}}); 
+		/* Listen for when user press keboard */ 
+		window.addEventListener('keyup', event => {
+			if (event.keyCode === 84 || event.keyCode == 67) { 
+				this.keyPress = event.keyCode; 
+				this.eventTimeStamp = event.timeStamp; 
+			}}); 
     },  
 }
 
@@ -344,7 +344,7 @@ export default {
         margin-top: 5em;
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         color: #283747;
-				text-align: center; 
+		text-align: center; 
     }
     
     .text{

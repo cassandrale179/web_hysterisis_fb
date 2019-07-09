@@ -9,6 +9,9 @@
       <div v-if="currentUserID">
           <Introduction></Introduction>
       </div>
+      <div v-if="count == 0 && currentUserID">
+        <Experiment></Experiment>
+      </div>
     </div> 
     <router-view/>
   </div>
@@ -20,17 +23,19 @@
 import {EventBus} from './event-bus.js'
 import Form from './components/Form';
 import Introduction from './components/Introduction'
+import Experiment from './components/Experiment' 
 
 export default {
   name: 'App',
 
   components: {
-    Form, Introduction
+    Form, Introduction, Experiment
   }, 
 
   data(){
     return {
       currentUserID: null, 
+      count: 5, 
     }
   },
   watch:{
@@ -47,8 +52,14 @@ export default {
     EventBus.$on("storedLocalUserID", (userID) => {  
       this.currentUserID = userID; 
       localStorage.currentUserID = userID; 
-		});
+    });
+
+    EventBus.$on("this.count", (count) => {  
+      this.count = count; 
+      console.log("this.count", this.count); 
+    });
   }
+
 }
 </script>
 

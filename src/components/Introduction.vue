@@ -59,6 +59,7 @@
 
 <!--- Javascript portion -->
 <script>
+import { EventBus } from ".././event-bus.js"; 
 export default {
   name: 'HelloWorld',
   data () {
@@ -71,15 +72,26 @@ export default {
 	
 	mounted() {
    
-	}, 
+  }, 
+  
+  watch: { 
+    /** When count reach 0, we emit an event and tell App.vue
+     * to automatically move to Experiment.vue cocmponent 
+     */ 
+      
+  }, 
+        
+
 	
   methods:{
+
 	/* A countdown clock of 5 seconds before the official experiment began */ 
     setCurrTime: function(){
       this.intervalid1 = setInterval(function(){
         this.$data.count -= 1; 
-        if (this.$data.count <= 0){
-          this.$emit('eventname', this.$data.count);  
+        console.log("this should be called", this.count); 
+        if (this.count <= 0){
+          EventBus.$emit('this.count', this.count);  
           clearInterval(this.intervalid1); 
         } 
       }.bind(this), 1000);
