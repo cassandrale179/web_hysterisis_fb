@@ -16,11 +16,10 @@
 					<h2> Thank you for taking the experiment </h2>
 					<div class="slidecontainer">
 							<p>Total correct responses for blue blocks: {{correctBlueResponse}} / 10 </p>
-							<input type="range" min="1" max="10" value="correctBlueResponse" class="slider" id="myRange">
 							<p>Total correct responses for blue blocks: {{correctGreenResponse}} / 10 </p>
-							<input type="range" min="1" max="10" value="correctGreenResponse" class="slider" id="myRange">
 							<p>Total correct responses for switching blocks: {{correctSwitchingResponse}} / 10</p>
-							<input type="range" min="1" max="10" value="correctSwitchingResponse" class="slider" id="myRange">
+							<button> Return </button>
+						
 						</div> 
 				</div>
       </div>
