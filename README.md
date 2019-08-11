@@ -71,7 +71,40 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - User press **t** if there is more triangle, **c** if there is more circle within **2.5** second time frame 
 
 
-## 3. Recommending Resources: 
+## 3. Deployment 
+- How to deploy this website: https://firebase.google.com/docs/hosting/quickstart 
+```
+$ npm install -g firebase-tools
+$ firebase login  (Log in to the email where your Firebase project is)
+$ firebase list  (Check to make sure your database backend is)
+$ firebase init
+$ npm run build
+$ firebase deploy 
+``` 
+- This will generate a `firebase.json` file where the information about the deployment. Make sure it looks like this
+```
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
+
+``` 
+The website should appear here: https://hystersis-69801.firebaseapp.com/#/ 
+
+
+## 4. Recommending Resources: 
 - **Official Documentation**: https://vuejs.org/v2/guide/ 
 - **Important functions** used within this code: 
    - **Components (nested)**: https://vuejs.org/v2/guide/components-registration.html 
@@ -80,9 +113,6 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
    - **Watchers (monitor changes in props )**: https://vuejs.org/v2/guide/computed.html 
    - **Set intervals** : https://www.w3schools.com/jsref/met_win_setinterval.asp  
 - **The Net Ninja's Vue Series**: https://www.youtube.com/channel/UCW5YeuERMmlnqo4oq8vwUpg  
-
-
-
 
 
 ### Documented Bugs
