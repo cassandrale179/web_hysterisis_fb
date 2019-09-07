@@ -5,11 +5,15 @@ A Vue.js project for the Congitive Neuroengineering Lab at Drexel University
  *Sample screenshot of website* 
 
 
-## Build Setup
+## How To Run This Code 
+- Make sure you have [Node](https://nodejs.org/en/) installed. You can check by typing `$node -v` in your command line and it should output the current Node version, and [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git). 
+- To run the code, do the following step 
 
 ``` bash
-# install dependencies
-npm install
+$ git clone https://github.com/cassandrale179/web_hysterisis_fb 
+
+# Go into the directory of web_hysterisis_fb and install dependencies
+$ npm install
 
 # serve with hot reload at localhost:8080
 npm run dev
@@ -24,7 +28,6 @@ npm run build --report
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
 - For development on Chrome OS, follow this guide here to install Node.js and NPM: https://medium.com/@jacoboakley/web-development-with-a-chromebook-installing-nodejs-4e358b82a31b 
-
 
 
 ## 1. Architecture 
